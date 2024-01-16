@@ -134,6 +134,13 @@ specify the appropriate [Json...] attribute on type 'Dotnet8CoreLibraries.Person
 # Klokke
 
 ```cs
+record Album(TimeProvider TimeProvider, string Title, DateOnly ReleaseDate)
+{
+    public int Age => 
+        (int)(TimeProvider.GetUtcNow() - ReleaseDate.ToDateTime(TimeOnly.MinValue))
+        .TotalDays / 365;
+}
+
 [Fact]
 public void Time_can_be_controlled_explicitly()
 {
@@ -142,13 +149,6 @@ public void Time_can_be_controlled_explicitly()
     var album = new Album(timeProvider, "The Dark Side of the Moon", new DateOnly(1973, 3, 1));
 
     testOutputHelper.WriteLine($"{album.Title} is {album.Age} years old");
-}
-
-record Album(TimeProvider TimeProvider, string Title, DateOnly ReleaseDate)
-{
-    public int Age => 
-        (int)(TimeProvider.GetUtcNow() - ReleaseDate.ToDateTime(TimeOnly.MinValue))
-        .TotalDays / 365;
 }
 ```
 ------
@@ -179,7 +179,7 @@ priceCalculator.Import("FileTwo");
 
 public class PriceCalculator(ITestOutputHelper output, IServiceProvider serviceProvider)
 {
-    public void Import(string tenant)
+    public void CalculateTotal(string tenant)
     {
         var handler = serviceProvider.GetRequiredKeyedService<PriceProvider>(tenant);
         

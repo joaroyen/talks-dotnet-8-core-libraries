@@ -13,14 +13,14 @@ public class DependencyInjectionTests(ITestOutputHelper output)
         
         var serviceProvider = services.BuildServiceProvider();
         var priceCalculator = serviceProvider.GetRequiredService<PriceCalculator>();
-        priceCalculator.Import("TenantOne");
-        priceCalculator.Import("TenantTwo");
+        priceCalculator.CalculateTotal("TenantOne");
+        priceCalculator.CalculateTotal("TenantTwo");
     }
 }
 
 public class PriceCalculator(ITestOutputHelper output, IServiceProvider serviceProvider)
 {
-    public void Import(string tenant)
+    public void CalculateTotal(string tenant)
     {
         var handler = serviceProvider.GetRequiredKeyedService<PriceProvider>(tenant);
         
