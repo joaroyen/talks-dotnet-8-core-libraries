@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Nyttige tips som gjør det morsommere å kode med .NET 8</title>
+    <title>Nyttige tips som gjør det litt morsommere å kode med .NET 8</title>
     <meta charset="utf-8">
 
     <style>
@@ -68,7 +68,7 @@
 
 class: center, middle
 
-# Nyttige tips som gjør det morsommere å kode med .NET 8
+# Nyttige tips som gjør det litt morsommere å kode med .NET 8
 
 ## Joar Øyen - Accelerate at Iver
     
@@ -83,6 +83,7 @@ class: center, middle
 - Metrikker
 - Fokus på ytelse
 - Bakoverkompatibilitet
+- Testing
 
 ---
 
@@ -90,9 +91,9 @@ class: center, middle
 
 - Støtte for nye typer. Blant annet `Memory<T>` og `ReadOnlyMemory<T>` som serialiseres som base 64 kodet streng om T er byte.
 - Manglede medlemmer
-- Arv
+- Interface hierarkier
 - Skrivebeskyttede og private medlemmer
-- AsyncEnumerable deserialisering av strømmer
+- Deserialisering av strømmer av elementer
 - Forbedret kodegenerering
 - Skru av refleksjonsbassert serialisering helt
 
@@ -255,7 +256,8 @@ public void Metrics_can_be_created_with_tags_and_cached_by_factory()
         "Measure throughput of job executions", 
         new Dictionary<string, object?>
         {
-            ["location"] = "Trondheim"
+            ["location"] = "West Europe",
+            ["environment"] = "Production"
         });
     
     jobOneCounter.Add(1);
@@ -264,23 +266,40 @@ public void Metrics_can_be_created_with_tags_and_cached_by_factory()
 
 ---
 
-## Fokus på ytelse
+## Fokus på ytelse: Minne
 
 - Ny variant av ikke muterbare samlinger i `System.Collections.Frozen`
-- Optimaliserte søking i minneområder med `System.Buffers.SearchValues<T>`
-- Optimaliserte formatstrenger med `System.Text.CompositeFormat`
+- Søking i minneområder med `System.Buffers.SearchValues<T>`
+- Formatstrenger med `System.Text.CompositeFormat`
+- Ett par skritt videre mot UTF-8 strenger
+- Nedskalering av allokert minne: `GC.RefreshMemoryLimit();`
+
+---
+
+## Fokus på ytelse: AI
+
 - Vektorberegning aksellerert med maskinvare
 - Oppdatert `System.Numerics.Tensors` aksellerert med maskinvare
-- Ett par skritt videre mod UTF-8 strenger
-- Nedscalering av allokert minne: `GC.RefreshMemoryLimit();`
+
+---
+
+## Fokus på ytelse: Kompilering
+
 - Generering av kode for lesing av konfigurasjon
+- Redusert behov for refleksjon
 - Økt mulighet for ahead-of-time kompilering
+- AOT kompabilitet
+    ```xml
+    <PropertyGroup>
+        <IsAotCompatible>true</IsAotCompatible>
+    </PropertyGroup>
+    ```
 
 ---
 
 # Bakoverkompatibilitet
 
-- Flere tilferer med innstramming av nullable referansetyper
+- Flere tilfeller med innstramming av nullable referansetyper
 - `BinaryFormatter` har vært obsolete en stund og nå kaster den exceptions
 - Backslash blir ikke automatisk endret til slash i Unix stier
 - Noen velkjente mapper har blitt flyttet i Unix
@@ -308,6 +327,26 @@ public void Product_version_contain_git_commit()
 
 ```sh
 ProductVersion = '1.2.3+c4f75562691551de6279eb025caefef4a47a0f3e'
+```
+
+---
+
+# Testing
+
+Enlelte pakker har fått tillgeggsbibliotek for testing:
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    ...
+    <PackageReference Include="Microsoft.Extensions.Diagnostics" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.*" />
+    ...
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.*" />
+    ...
+  </ItemGroup>
+
+</Project>
 ```
 
 ---
