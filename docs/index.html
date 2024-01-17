@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Nyttige tips som gjør det litt morsommere å kode med .NET 8</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -95,7 +95,7 @@ class: center, middle
 - Skrivebeskyttede og private medlemmer
 - Deserialisering av strømmer av elementer
 - Forbedret kodegenerering
-- Skru av refleksjonsbassert serialisering helt
+- Skru av refleksjonsbasert serialisering helt
 
 ???
 
@@ -278,8 +278,8 @@ public void Metrics_can_be_created_with_tags_and_cached_by_factory()
 
 ## Fokus på ytelse: AI
 
-- Vektorberegning aksellerert med maskinvare
-- Oppdatert `System.Numerics.Tensors` aksellerert med maskinvare
+- Vektorberegning akselerert med maskinvare
+- Oppdatert `System.Numerics.Tensors` akselerert med maskinvare
 
 ---
 
@@ -288,7 +288,7 @@ public void Metrics_can_be_created_with_tags_and_cached_by_factory()
 - Generering av kode for lesing av konfigurasjon
 - Redusert behov for refleksjon
 - Økt mulighet for ahead-of-time kompilering
-- AOT kompabilitet
+- AOT kompatibilitet
     ```xml
     <PropertyGroup>
         <IsAotCompatible>true</IsAotCompatible>
@@ -333,7 +333,7 @@ ProductVersion = '1.2.3+c4f75562691551de6279eb025caefef4a47a0f3e'
 
 # Testing
 
-Enlelte pakker har fått tillgeggsbibliotek for testing:
+Enkelte pakker har fått tilleggsbibliotek for testing:
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
@@ -362,24 +362,11 @@ class: center, middle
 - [Breaking changes in .NET 8](https://learn.microsoft.com/en-us/dotnet/core/compatibility/8.0)
 
     </textarea>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
     <script>
-      mermaid.initialize({
-        startOnLoad:false,
-        flowchartConfig: {
-          width: '100%'
-        }
-      });
-
       var slideshow = remark.create( {
         ratio: "16:9",
         highlightStyle: 'monokai'
-      });
-
-      slideshow.on("afterShowSlide", s => {
-        const [slide] = document.getElementsByClassName("remark-visible");
-        mermaid.init(Array.from(slide.getElementsByClassName("mermaid")));
       });
     </script>
   </body>
